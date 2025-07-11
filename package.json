@@ -1,0 +1,39 @@
+{
+  "name": "greystarscrapy",
+  "version": "1.0.0",
+  "description": "Este scraper está diseñado para extraer información de propiedades de Greystar de manera robusta y eficiente, utilizando procesamiento paralelo y manejo de errores avanzado.",
+  "main": "greystar_paralell_scrapy_v2.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rsamanez/GreystarPropertiesScraper.git"
+  },
+  "keywords": [
+    "web-scraping",
+    "puppeteer",
+    "greystar",
+    "real-estate",
+    "property-scraper",
+    "nodejs",
+    "parallel-processing",
+    "data-extraction",
+    "automation",
+    "csv-export",
+    "rental-properties",
+    "apartment-scraper",
+    "headless-browser",
+    "resilient-scraping",
+    "property-data"
+  ],
+  "author": "Rommel Samanez",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/rsamanez/GreystarPropertiesScraper/issues"
+  },
+  "homepage": "https://github.com/rsamanez/GreystarPropertiesScraper#readme",
+  "dependencies": {
+    "puppeteer-core": "^24.12.1"
+  }
+}
