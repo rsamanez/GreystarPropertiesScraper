@@ -109,62 +109,62 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 `web-scraping`, `puppeteer`, `greystar`, `real-estate`, `property-scraper`, `nodejs`, `parallel-processing`, `data-extraction`, `automation`, `csv-export`, `rental-properties`, `apartment-scraper`, `headless-browser`, `resilient-scraping`, `property-data`
 
-4. **Validación y Guardado**
-   - Valida que cada registro tenga datos mínimos
-   - Guarda solo registros completos en CSV
-   - Marca todos los intentos como procesados
+4. **Validation and Saving**
+   - Validates that each record has minimum data
+   - Saves only complete records to CSV
+   - Marks all attempts as processed
 
-## Métodos de Extracción de Datos
+## Data Extraction Methods
 
-### 🔍 Estrategia Multi-Método
+### 🔍 Multi-Method Strategy
 
-1. **JSON-LD Estructurado**
+1. **Structured JSON-LD**
    ```javascript
-   // Busca en scripts con structured data
+   // Search in scripts with structured data
    script[type="application/ld+json"]
    ```
 
 2. **Meta Tags**
    ```javascript
-   // Busca en meta properties y names
+   // Search in meta properties and names
    meta[property], meta[name]
    ```
 
-3. **Análisis de Texto**
+3. **Text Analysis**
    ```javascript
-   // Patrones regex para direcciones completas
+   // Regex patterns for complete addresses
    /(\d+\s+[A-Za-z\s]+(?:Street|St|Avenue|Ave...).*[A-Z]{2}\s+\d{5})/gi
    ```
 
-4. **Selectores Específicos**
+4. **Specific Selectors**
    ```javascript
-   // Elementos con clases relacionadas a direcciones
+   // Elements with address-related classes
    [class*="address"], [class*="location"], [class*="contact"]
    ```
 
-### 📞 Extracción de Teléfonos
+### 📞 Phone Extraction
 
-1. **Enlaces telefónicos**
+1. **Phone links**
    ```javascript
    a[href^="tel:"]
    ```
 
-2. **Patrones en texto**
+2. **Text patterns**
    ```javascript
    /(?:\+?1[-.\s]?)?\(?([0-9]{3})\)?[-.\s]?([0-9]{3})[-.\s]?([0-9]{4})/
    ```
 
-## Validación de Datos
+## Data Validation
 
-### Criterios de Validación
+### Validation Criteria
 
-Un registro se considera válido si tiene:
-- ✅ **Teléfono**: Formato válido con código de país
-- ✅ **Código Postal**: Formato USA (5 dígitos o 5+4)
-- ✅ **Estado**: Código de 2 letras (ej: CA, NY, TX)
-- ✅ **Dirección o Ciudad**: Al menos uno de los dos campos
+A record is considered valid if it has:
+- ✅ **Phone**: Valid format with country code
+- ✅ **Zip Code**: USA format (5 digits or 5+4)
+- ✅ **State**: 2-letter code (e.g., CA, NY, TX)
+- ✅ **Address or City**: At least one of the two fields
 
-### Ejemplo de Validación
+### Validation Example
 
 ```javascript
 function isValidRecord(communityData, addressParts, community) {
@@ -178,21 +178,21 @@ function isValidRecord(communityData, addressParts, community) {
 }
 ```
 
-## Configuración del Sistema
+## System Configuration
 
-### Configuración del Navegador
+### Browser Configuration
 
 ```javascript
 {
-    headless: true,                    // Modo sin interfaz gráfica
-    timeout: 20000,                    // 20 segundos por página
-    workers: 10,                       // Procesamiento paralelo
-    delay: 800,                        // Pausa entre requests (ms)
-    retries: 3                         // Intentos por URL
+    headless: true,                    // Headless mode
+    timeout: 20000,                    // 20 seconds per page
+    workers: 10,                       // Parallel processing
+    delay: 800,                        // Pause between requests (ms)
+    retries: 3                         // Attempts per URL
 }
 ```
 
-### Argumentos de Chrome
+### Chrome Arguments
 
 ```javascript
 [
@@ -205,21 +205,21 @@ function isValidRecord(communityData, addressParts, community) {
 ]
 ```
 
-## Estructura de Datos
+## Data Structure
 
-### Formato CSV de Salida
+### CSV Output Format
 
 ```csv
 state_name,communityName,address,city,state_address,zip,phone,email
 ```
 
-### Ejemplo de Registro
+### Record Example
 
 ```csv
 California,"The Residences at Marina Bay","1000 Marina Bay Dr","Richmond","CA","94804","+1 510 555 1234","residencesmarinabay@greystar.com"
 ```
 
-### Formato JSON de Enlaces
+### JSON Links Format
 
 ```json
 {
@@ -235,137 +235,137 @@ California,"The Residences at Marina Bay","1000 Marina Bay Dr","Richmond","CA","
 }
 ```
 
-## Manejo de Errores
+## Error Handling
 
-### Tipos de Errores Manejados
+### Types of Handled Errors
 
-1. **Timeouts de Página**
-   - Timeout configurado a 20 segundos
-   - Marca como procesado y continúa
+1. **Page Timeouts**
+   - Timeout configured to 20 seconds
+   - Marks as processed and continues
 
-2. **Errores de Navegación**
-   - Páginas no encontradas (404)
-   - Problemas de conectividad
-   - Continúa con el siguiente enlace
+2. **Navigation Errors**
+   - Pages not found (404)
+   - Connectivity issues
+   - Continues with next link
 
-3. **Errores de Extracción**
-   - Páginas con estructura diferente
-   - JavaScript no ejecutado
-   - Guarda registro vacío pero marcado como procesado
+3. **Extraction Errors**
+   - Pages with different structure
+   - JavaScript not executed
+   - Saves empty record but marks as processed
 
-4. **Errores de Validación**
-   - Datos incompletos
-   - Formatos incorrectos
-   - Omite del CSV pero marca como procesado
+4. **Validation Errors**
+   - Incomplete data
+   - Incorrect formats
+   - Skips from CSV but marks as processed
 
-## Logging y Monitoreo
+## Logging and Monitoring
 
-### Niveles de Logging
+### Logging Levels
 
 ```javascript
-// Información general
-console.log('Worker 0: ✓ Procesado 15/335 - Community Name');
+// General information
+console.log('Worker 0: ✓ Processed 15/335 - Community Name');
 
-// Advertencias (datos incompletos)
-console.log('Worker 0: ⚠️ Registro incompleto omitido - Community Name');
+// Warnings (incomplete data)
+console.log('Worker 0: ⚠️ Incomplete record skipped - Community Name');
 
-// Errores
-console.error('Worker 0: ✗ Error procesando Community Name: timeout');
+// Errors
+console.error('Worker 0: ✗ Error processing Community Name: timeout');
 ```
 
-### Métricas de Progreso
+### Progress Metrics
 
-- Total de enlaces encontrados
-- Enlaces ya procesados
-- Enlaces restantes
-- Registros válidos guardados
-- Registros omitidos por validación
+- Total links found
+- Already processed links
+- Remaining links
+- Valid records saved
+- Records skipped by validation
 
-## Uso del Sistema
+## System Usage
 
-### Ejecución
+### Execution
 
 ```bash
-# Ejecutar con caffeinate para evitar sleep
-caffeinate node graystar_paralell_scrapy_v2.js
+# Run with caffeinate to avoid sleep
+caffeinate node greystar_paralell_scrapy_v2.js
 ```
 
-### Reinicio Después de Interrupción
+### Restart After Interruption
 
 ```bash
-# El sistema automáticamente detecta el progreso previo
-node graystar_paralell_scrapy_v2.js
+# System automatically detects previous progress
+node greystar_paralell_scrapy_v2.js
 ```
 
-### Comenzar Desde Cero
+### Start from Scratch
 
 ```bash
-# Eliminar archivos de estado
+# Remove state files
 rm greystar_links.json greystar_progress.json greystar_properties.csv
 
-# Ejecutar nuevamente
-node graystar_paralell_scrapy_v2.js
+# Run again
+node greystar_paralell_scrapy_v2.js
 ```
 
-## Optimizaciones Implementadas
+## Implemented Optimizations
 
-### Rendimiento
+### Performance
 
-- **Headless browsing**: Navegación sin interfaz gráfica
-- **Procesamiento paralelo**: 10 workers simultáneos
-- **Timeouts optimizados**: Balance entre velocidad y estabilidad
-- **Pausas controladas**: Evita sobrecarga del servidor
+- **Headless browsing**: Navigation without GUI
+- **Parallel processing**: 10 simultaneous workers
+- **Optimized timeouts**: Balance between speed and stability
+- **Controlled pauses**: Avoids server overload
 
-### Calidad de Datos
+### Data Quality
 
-- **Validación estricta**: Solo registros completos
-- **Parseo inteligente**: Múltiples métodos de extracción
-- **Normalización**: Formatos consistentes para teléfonos
-- **Generación de emails**: Basado en nombres de comunidad
+- **Strict validation**: Only complete records
+- **Smart parsing**: Multiple extraction methods
+- **Normalization**: Consistent formats for phones
+- **Email generation**: Based on community names
 
-### Robustez
+### Robustness
 
-- **Estado persistente**: Recuperación automática
-- **Manejo de errores**: Continúa ante fallos individuales
-- **Logging detallado**: Facilita debugging y monitoreo
-- **Thread-safe**: Escritura segura en archivos compartidos
+- **Persistent state**: Automatic recovery
+- **Error handling**: Continues despite individual failures
+- **Detailed logging**: Facilitates debugging and monitoring
+- **Thread-safe**: Safe writing to shared files
 
-## Consideraciones Técnicas
+## Technical Considerations
 
-### Memoria y CPU
+### Memory and CPU
 
-- Cada worker consume ~50-100MB RAM
-- 10 workers = ~500MB-1GB RAM total
-- CPU: Utiliza múltiples cores eficientemente
+- Each worker consumes ~50-100MB RAM
+- 10 workers = ~500MB-1GB total RAM
+- CPU: Uses multiple cores efficiently
 
-### Red y Conectividad
+### Network and Connectivity
 
-- ~1 request por segundo por worker
-- Total: ~10 requests/segundo
-- Respetuoso con el servidor objetivo
+- ~1 request per second per worker
+- Total: ~10 requests/second
+- Respectful with target server
 
-### Almacenamiento
+### Storage
 
-- Enlaces JSON: ~500KB - 1MB
-- Progreso JSON: Crece hasta ~500KB
-- CSV final: ~1-5MB (dependiendo de datos válidos)
+- JSON links: ~500KB - 1MB
+- Progress JSON: Grows to ~500KB
+- Final CSV: ~1-5MB (depending on valid data)
 
-## Mantenimiento
+## Maintenance
 
-### Actualizaciones Necesarias
+### Necessary Updates
 
-1. **Selectores CSS**: Si Greystar cambia su estructura HTML
-2. **Patrones de dirección**: Para nuevos formatos de dirección
-3. **Timeouts**: Ajustar según velocidad del servidor
-4. **Validación**: Criterios más estrictos o flexibles
+1. **CSS Selectors**: If Greystar changes HTML structure
+2. **Address Patterns**: For new address formats
+3. **Timeouts**: Adjust according to server speed
+4. **Validation**: Stricter or more flexible criteria
 
-### Monitoreo Recomendado
+### Recommended Monitoring
 
-- Revisar logs cada 30 minutos durante ejecución
-- Verificar calidad de datos en CSV intermedio
-- Monitorear uso de recursos del sistema
-- Validar que el progreso se guarde correctamente
+- Review logs every 30 minutes during execution
+- Verify data quality in intermediate CSV
+- Monitor system resource usage
+- Validate that progress is saved correctly
 
 ---
 
-**Nota**: Este sistema está diseñado para ser robusto y eficiente, pero siempre respeta los términos de servicio del sitio web objetivo y implementa delays apropiados para evitar sobrecargar el servidor.
+**Note**: This system is designed to be robust and efficient, but always respects the terms of service of the target website and implements appropriate delays to avoid overloading the server.
